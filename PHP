@@ -1,0 +1,140 @@
+apt install -y lsb-release ca-certificates apt-transport-https software-properties-common
+curl -sSL https://packages.sury.org/php/README.txt | bash -E
+apt update
+apt install -y php8.3 php8.3-fpm php8.3-cli php8.3-common php8.3-curl php8.3-gd php8.3-intl php8.3-mbstring php8.3-mysql php8.3-zip php8.3-bcmath php8.3-soap php8.3-xml php8.3-imagick php8.3-opcache
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+My sql
+
+cd /tmp
+wget https://dev.mysql.com/get/mysql-apt-config_0.8.32-1_all.deb --no-check-certificate
+
+ls -lh mysql-apt-config_0.8.32-1_all.deb
+wget https://repo.mysql.com//mysql-apt-config_0.8.32-1_all.deb --no-check-certificate
+
+
+apt update
+apt install -y mariadb-server mariadb-client
+systemctl enable mariadb
+systemctl start mariadb
+mysql_secure_installation
+mysql -V
+systemctl status mariadb
+sudo mysql
+
+CREATE DATABASE magento;
+CREATE USER 'magento'@'localhost' IDENTIFIED BY 'Mag$1234567';
+GRANT ALL PRIVILEGES ON magento.* TO 'magento'@'localhost';
+FLUSH PRIVILEGES;
+exit
+
+Mag$1234567
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+apt install -y nginx
+---------------------------------------------------------------------------------------------------------------------
+
+apt update && apt upgrade -y
+apt install -y curl wget gnupg lsb-release ca-certificates unzip software-properties-common
+----------------------------------------------------------------------------------------------------------------------
+
+Install Web Server
+Apache (you used Apache)
+
+apt install -y apache2
+a2enmod rewrite proxy_fcgi setenvif
+a2enconf php8.3-fpm
+systemctl restart apache2
+
+--------------------------------------------------------------
+
+Install Elasticsearch (Magento Compatible)
+
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.17.17-amd64.deb
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.17.17-amd64.deb.sha512
+shasum -a 512 -c elasticsearch-7.17.17-amd64.deb.sha512
+dpkg -i elasticsearch-7.17.17-amd64.deb
+
+
+sysctl -w vm.max_map_count=262144
+echo "vm.max_map_count=262144" >> /etc/sysctl.conf
+
+systemctl enable elasticsearch
+systemctl start elasticsearch
+
+----------------------------------------------------------------------------
+
+Install Composer
+
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+composer --version
+
+----------------------------------------------------------------------------
+Download Magento
+
+Public Key: b63a196d79f71c679a1e3084e83e3ec6
+Private Key: 16a6de2bc880757b8ad00f18193363ab
+
+chown -R admin:www-data /var/www
+
+chmod -R 775 /var/www
+
+cd /var/www
+composer config --global http-basic.repo.magento.com b63a196d79f71c679a1e3084e83e3ec6 16a6de2bc880757b8ad00f18193363ab
+composer create-project --repository-url=https://repo.magento.com/ \
+magento/project-community-edition magento
+
+after installation 
+
+cd /var/www/magento
+
+sudo chown -R admin:www-data .
+
+sudo find var generated vendor pub/static pub/media app/etc -type f -exec chmod 664 {} \;
+sudo find var generated vendor pub/static pub/media app/etc -type d -exec chmod 775 {} \;
+
+chmod +x bin/magento
+
+systemctl status apache2
+
+systemctl status mysql
+
+-------------------------------------------------------------------------------------------
+
+sudo nano /etc/apache2/sites-available/magento.conf
+
+<VirtualHost *:80>
+    ServerName test.mgt.com
+    DocumentRoot /var/www/magento/pub
+
+    <Directory /var/www/magento/pub>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+----------------------------------------------------------------------------
+
+bin/magento setup:install \
+--base-url=http://3.111.213.236/ \
+--db-host=localhost \
+--db-name=magento \
+--db-user=magentouser \
+--db-password=StrongPassword \
+--admin-firstname=Admin \
+--admin-lastname=User \
+--admin-email=gollarambabu70@gmail.com \
+--admin-user=admin \
+--admin-password=Admin@12345 \
+--language=en_US \
+--currency=USD \
+--timezone=America/Chicago \
+--use-rewrites=1 \
+--search-engine=elasticsearch7 \
+--elasticsearch-host=localhost \
+--elasticsearch-port=9200
+
+
