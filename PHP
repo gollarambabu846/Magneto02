@@ -31,6 +31,8 @@ exit
 
 Mag$1234567
 
+Root@1234$
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 apt install -y nginx
@@ -136,5 +138,52 @@ bin/magento setup:install \
 --search-engine=elasticsearch7 \
 --elasticsearch-host=localhost \
 --elasticsearch-port=9200
+
+---------------------------------------
+
+cd /var/www/magento
+
+bin/magento setup:install \
+--base-url="http://test.mgt.com" \
+--db-host="localhost" \
+--db-name="magento" \
+--db-user="magentouser" \
+--db-password="M@gento2026!" \
+--admin-firstname="Admin" \
+--admin-lastname="User" \
+--admin-email="gollarambabu70@gmail.com" \
+--admin-user="admin" \
+--admin-password="Admin@12345" \
+--language="en_US" \
+--currency="USD" \
+--timezone="Asia/Kolkata" \
+--use-rewrites=1 \
+--search-engine=elasticsearch7 \
+--elasticsearch-host="localhost" \
+--elasticsearch-port=9200
+
+------------------------
+
+cd /var/www/magento
+
+bin/magento setup:install \
+--base-url="http://test.mgt.com" \
+--db-host="localhost" \
+--db-name="magento" \
+--db-user="magentouser" \
+--db-password="M@gento2026!" \
+--admin-firstname="Admin" \
+--admin-lastname="User" \
+--admin-email="gollarambabu70@gmail.com" \
+--admin-user="admin" \
+--admin-password="Admin@12345" \
+--language="en_US" \
+--currency="USD" \
+--timezone="Asia/Kolkata" \
+--use-rewrites=1 \
+--search-engine=elasticsearch \
+--elasticsearch-host="localhost" \
+--elasticsearch-port=9200
+
 
 
