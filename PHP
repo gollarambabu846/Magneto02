@@ -23,6 +23,9 @@ mysql -V
 systemctl status mariadb
 sudo mysql
 
+sudo mysql -u root
+
+
 CREATE DATABASE magento;
 CREATE USER 'magento'@'localhost' IDENTIFIED BY 'Mag$1234567';
 GRANT ALL PRIVILEGES ON magento.* TO 'magento'@'localhost';
@@ -37,7 +40,7 @@ FLUSH PRIVILEGES;
 
 
 
-
+Hyderabad$123456789
 
 Mag$1234567
 
