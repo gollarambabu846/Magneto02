@@ -29,6 +29,16 @@ GRANT ALL PRIVILEGES ON magento.* TO 'magento'@'localhost';
 FLUSH PRIVILEGES;
 exit
 
+CREATE DATABASE magento;
+CREATE USER 'magentouser'@'localhost' IDENTIFIED BY 'StrongPass@123';
+GRANT ALL PRIVILEGES ON magento.* TO 'magentouser'@'localhost';
+FLUSH PRIVILEGES;
+
+
+
+
+
+
 Mag$1234567
 
 Root@1234$
